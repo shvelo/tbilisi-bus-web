@@ -1,11 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>leaflet-app</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script src="/dist/build.js"></script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <title>leaflet-app</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    noscript {
+      font-family: sans-serif;
+      color: #4c4c4c;
+      font-size: 48px;
+      font-weight: bold;
+      line-height: 100vh;
+      text-align: center;
+      display: block;
+    }
+  </style>
+  <link rel="shortcut icon" href="/src/assets/ic_launcher_web.png" type="image/png">
+</head>
+<body>
+<div id="app">
+  <noscript>
+    You need JavaScript to view this app
+  </noscript>
+</div>
+<script src="/dist/build.js"></script>
+</body>
 </html>
