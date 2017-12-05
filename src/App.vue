@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="container-fluid">
     <div class="row">
-      <div class="col-2 sidebar">
+      <div class="col-3 sidebar">
         <h1 class="text-center">
           <img src="/src/assets/ic_launcher_web.png" alt="" class="img-fluid" width="60px">
           Tbilisi Bus
@@ -44,7 +44,7 @@
           </div>
         </div>
       </div>
-      <leaflet-map class="col-10 map-pane"></leaflet-map>
+      <leaflet-map class="col-9 map-pane"></leaflet-map>
     </div>
   </div>
 </template>

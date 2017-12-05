@@ -59,8 +59,8 @@
 
         let popup = L.popup({
           offset: L.point(0, -32),
-          maxWidth: 300,
-          minWidth: 300,
+          maxWidth: 400,
+          minWidth: 400,
           maxHeight: 600
         }, marker);
 
@@ -78,9 +78,15 @@
 
         marker.bindPopup(popup).openPopup();
 
-        axios.get(document.location.protocol + '//' + document.location.hostname + ':1234/transit.ttc.com.ge/pts-portal-services/servlet/stopArrivalTimesServlet?stopId=' + stopId)
+        this.cors('http://transit.ttc.com.ge/pts-portal-services/servlet/stopArrivalTimesServlet?stopId=' + stopId)
           .then((result) => {
-            popup.setContent(stopHeader + result.data);
+            popup.setContent(stopHeader + result);
+          });
+      },
+      cors: function (url) {
+        return axios.get('http://cors-proxy.htmldriven.com/?url=' + encodeURIComponent(url))
+          .then((result) => {
+            return result.data && result.data.body;
           });
       }
     },
@@ -113,6 +119,31 @@
     width: 100%;
   }
 
+  .leaflet-popup-content-wrapper {
+    border-radius: 0;
+  }
+
+  .leaflet-popup-content {
+    max-height: 80vh;
+    min-height: 80px;
+    overflow-y: auto;
+    margin: 0;
+  }
+
+  .leaflet-container a.leaflet-popup-close-button {
+    font-size: 18px;
+    right: 15px;
+    top: 2px;
+  }
+
+  .stopInfoHeader {
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-right: 20px;
+  }
+
   .arrivalTableRouteNumberHeader, .arrivalTableStopNameHeader, .arrivalTableArrivalTimeHeader {
     display: none;
   }
@@ -140,12 +171,6 @@
 
   .arrivalTableArrivalTime::after {
     content: 'წთ.'
-  }
-
-  .stopInfoHeader {
-    text-align: center;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 5px;
   }
 
   .spinner {
