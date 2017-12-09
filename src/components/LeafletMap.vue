@@ -98,12 +98,6 @@
       showInfo: function (marker) {
         this.selectedStop = marker.options.stop;
         marker.bindPopup(this.popup).openPopup();
-      },
-      cors: function (url) {
-        return axios.get('https://cors-proxy.htmldriven.com/?url=' + encodeURIComponent(url))
-          .then((result) => {
-            return result.data && result.data.body;
-          });
       }
     },
     data() {

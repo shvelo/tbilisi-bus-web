@@ -35,14 +35,11 @@
         this.cors('http://transit.ttc.com.ge/pts-portal-services/servlet/stopArrivalTimesServlet?stopId=' + this.stop.id)
           .then((result) => {
             this.loading = false;
-            this.stopTable = result;
+            this.stopTable = result.data;
           });
       },
       cors: function (url) {
-        return axios.get('https://cors-proxy.htmldriven.com/?url=' + encodeURIComponent(url))
-          .then((result) => {
-            return result.data && result.data.body;
-          });
+        return axios.get('https://cors-anywhere.herokuapp.com/' + url);
       }
     },
     data() {
