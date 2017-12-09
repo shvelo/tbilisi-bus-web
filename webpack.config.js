@@ -33,7 +33,8 @@ module.exports = {
         test: /\.(png|jpg|gif|woff|woff2|eot|ttf|otf|svg)$/,
         loader: 'file-loader',
         options: {
-          name: '[name].[ext]?[hash]'
+          name: '[name].[ext]?[hash]',
+          useRelativePath: true
         }
       }
     ]
