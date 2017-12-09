@@ -1,5 +1,8 @@
 <template>
-  <div :id="mapId"></div>
+  <div>
+    <div class="map-pane" :id="mapId"></div>
+    <arrival-times :stop="selectedStop" ref="arrivalTimes"></arrival-times>
+  </div>
 </template>
 
 <script>
@@ -10,6 +13,7 @@
   import 'leaflet/dist/leaflet.css'
   import 'leaflet.markercluster/dist/MarkerCluster.css'
   import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+  import ArrivalTimes from "./ArrivalTimes";
 
   const stopMarker = L.Marker.extend({
     options: {
@@ -18,6 +22,7 @@
   });
 
   export default {
+    components: {ArrivalTimes},
     name: 'leaflet-map',
     methods: {
       initMap: function () {
@@ -46,6 +51,18 @@
         this.markerLayer.on('click', (event) => {
           this.showInfo(event.layer);
         });
+
+        this.initPopup();
+      },
+      initPopup: function () {
+        this.popup = L.popup({
+          offset: L.point(0, -32),
+          maxWidth: 400,
+          minWidth: 400,
+          maxHeight: 600
+        }, this.markerLayer);
+
+        this.popup.setContent(this.$refs.arrivalTimes.$el);
       },
       stopIcon: function () {
         return L.icon({
@@ -55,33 +72,8 @@
         });
       },
       showInfo: function (marker) {
-        let stopId = marker.options.stop.id;
-
-        let popup = L.popup({
-          offset: L.point(0, -32),
-          maxWidth: 400,
-          minWidth: 400,
-          maxHeight: 600
-        }, marker);
-
-        let stopHeader = '<div class="stopInfoHeader"><strong>[' + marker.options.stop.id + ']</strong> ' +
-          marker.options.stop.name + '</div>';
-
-        popup.setContent(stopHeader +
-          '<div class="spinner">\n' +
-          '  <div class="rect1"></div>\n' +
-          '  <div class="rect2"></div>\n' +
-          '  <div class="rect3"></div>\n' +
-          '  <div class="rect4"></div>\n' +
-          '  <div class="rect5"></div>\n' +
-          '</div>');
-
-        marker.bindPopup(popup).openPopup();
-
-        this.cors('http://transit.ttc.com.ge/pts-portal-services/servlet/stopArrivalTimesServlet?stopId=' + stopId)
-          .then((result) => {
-            popup.setContent(stopHeader + result);
-          });
+        this.selectedStop = marker.options.stop;
+        marker.bindPopup(this.popup).openPopup();
       },
       cors: function (url) {
         return axios.get('http://cors-proxy.htmldriven.com/?url=' + encodeURIComponent(url))
@@ -94,6 +86,8 @@
       return {
         map: null,
         markerLayer: null,
+        selectedStop: null,
+        popup: null,
         center: [41.7151, 44.8271],
         zoom: 13,
         providerName: 'Hydda.Full',
@@ -115,8 +109,12 @@
 </script>
 
 <style>
-  .arrivalTimesTable, .arrivalTimesInnerTable {
-    width: 100%;
+  .arrival-times {
+    display: none;
+  }
+
+  .leaflet-popup-content .arrival-times {
+    display: block;
   }
 
   .leaflet-popup-content-wrapper {
@@ -134,100 +132,5 @@
     font-size: 18px;
     right: 15px;
     top: 2px;
-  }
-
-  .stopInfoHeader {
-    text-align: center;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 5px;
-    padding-top: 5px;
-    padding-right: 20px;
-  }
-
-  .arrivalTableRouteNumberHeader, .arrivalTableStopNameHeader, .arrivalTableArrivalTimeHeader {
-    display: none;
-  }
-
-  .arrivalTableRouteNumber {
-    width: 4em;
-    padding: 5px;
-    color: white;
-    background: orange;
-    text-align: center;
-    font-weight: bold;
-  }
-
-  .arrivalTableStopName {
-    text-align: center;
-    padding: 5px;
-  }
-
-  .arrivalTableArrivalTime {
-    width: 4em;
-    text-align: center;
-    padding: 5px;
-    font-weight: bold;
-  }
-
-  .arrivalTableArrivalTime::after {
-    content: 'წთ.'
-  }
-
-  .spinner {
-    margin: 0 auto;
-    width: 50px;
-    height: 40px;
-    text-align: center;
-    font-size: 10px;
-  }
-
-  .spinner > div {
-    background-color: #333;
-    height: 100%;
-    width: 6px;
-    display: inline-block;
-
-    -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
-    animation: sk-stretchdelay 1.2s infinite ease-in-out;
-  }
-
-  .spinner .rect2 {
-    -webkit-animation-delay: -1.1s;
-    animation-delay: -1.1s;
-  }
-
-  .spinner .rect3 {
-    -webkit-animation-delay: -1.0s;
-    animation-delay: -1.0s;
-  }
-
-  .spinner .rect4 {
-    -webkit-animation-delay: -0.9s;
-    animation-delay: -0.9s;
-  }
-
-  .spinner .rect5 {
-    -webkit-animation-delay: -0.8s;
-    animation-delay: -0.8s;
-  }
-
-  @-webkit-keyframes sk-stretchdelay {
-    0%, 40%, 100% {
-      -webkit-transform: scaleY(0.4)
-    }
-    20% {
-      -webkit-transform: scaleY(1.0)
-    }
-  }
-
-  @keyframes sk-stretchdelay {
-    0%, 40%, 100% {
-      transform: scaleY(0.4);
-      -webkit-transform: scaleY(0.4);
-    }
-    20% {
-      transform: scaleY(1.0);
-      -webkit-transform: scaleY(1.0);
-    }
   }
 </style>
