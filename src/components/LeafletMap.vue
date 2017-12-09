@@ -90,7 +90,7 @@
       },
       stopIcon: function () {
         return L.icon({
-          iconUrl: '/src/assets/stop_icon.png',
+          iconUrl: 'src/assets/stop_icon.png',
           iconSize: [32, 38],
           iconAnchor: [16, 38]
         });
