@@ -61,7 +61,7 @@
         });
         this.map.addLayer(this.markerLayer);
 
-        axios.get('/src/assets/db.json').then((result) => {
+        axios.get('src/assets/db.json').then((result) => {
           this.markerLayer.addLayers(result.data.map((stop) => {
             return new stopMarker([stop.lat, stop.lon], {
               icon: this.stopIcon(),
