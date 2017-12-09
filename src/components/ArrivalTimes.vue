@@ -39,7 +39,7 @@
           });
       },
       cors: function (url) {
-        return axios.get('http://cors-proxy.htmldriven.com/?url=' + encodeURIComponent(url))
+        return axios.get('https://cors-proxy.htmldriven.com/?url=' + encodeURIComponent(url))
           .then((result) => {
             return result.data && result.data.body;
           });
