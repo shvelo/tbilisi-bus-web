@@ -25,9 +25,33 @@
     components: {ArrivalTimes},
     name: 'leaflet-map',
     methods: {
+      restoreMapState: function () {
+        let center = (localStorage.getItem("mapCenter") && JSON.parse(localStorage.getItem("mapCenter"))),
+          zoom = localStorage.getItem("mapZoom");
+
+        if(center && center.lat && center.lng) {
+          this.center = center;
+        }
+
+        if(!isNaN(parseInt(zoom))) {
+          this.zoom = zoom;
+        }
+      },
       initMap: function () {
+        this.restoreMapState();
+
         this.map = L.map(this.mapId).setView(this.center, this.zoom);
         L.tileLayer.provider(this.providerName, this.providerOptions).addTo(this.map);
+
+        this.map.on('moveend', () => {
+          this.center = this.map.getCenter();
+          localStorage.setItem("mapCenter", JSON.stringify(this.center));
+        });
+
+        this.map.on('zoomend', () => {
+          this.zoom = this.map.getZoom();
+          localStorage.setItem("mapZoom", this.zoom);
+        });
       },
       initMarkerLayer: function () {
         this.markerLayer = L.markerClusterGroup({
