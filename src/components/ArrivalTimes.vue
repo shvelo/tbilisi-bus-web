@@ -1,6 +1,12 @@
 <template>
   <div class="arrival-times">
-    <div class="stopInfoHeader" v-if="stop"><strong>[{{ stop.id }}]</strong> {{ stop.name }}</div>
+    <div class="stopInfoHeader" v-if="stop">
+      <a href="#" @click.prevent="refresh" class="arrival-times-refresh">
+        <span class="oi oi-reload"></span>
+      </a>
+      <strong>[{{ stop.id }}]</strong>
+      {{ stop.name }}
+    </div>
     <div v-if="loading" class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -58,12 +64,16 @@
     width: 100%;
   }
 
+  .arrival-times-refresh {
+    position: absolute;
+    left: 8px;
+    top: 7px;
+  }
+
   .stopInfoHeader {
     text-align: center;
     border-bottom: 1px solid #ccc;
-    padding-bottom: 5px;
-    padding-top: 5px;
-    padding-right: 20px;
+    padding: 5px 20px;
   }
 
   .arrivalTableRouteNumberHeader, .arrivalTableStopNameHeader, .arrivalTableArrivalTimeHeader {

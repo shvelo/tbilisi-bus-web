@@ -17,6 +17,7 @@
     "leaflet-providers": "^1.1.17",
     "leaflet.markercluster": "^1.2.0",
     "mapbox-gl": "^0.42.2",
+    "open-iconic": "^1.1.1",
     "vue": "^2.4.4",
     "vuex": "^3.0.1",
     "vuex-persistedstate": "^2.4.2"

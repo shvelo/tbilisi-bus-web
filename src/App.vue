@@ -51,6 +51,7 @@
 
 <script>
   import 'bootstrap/dist/css/bootstrap.css'
+  import 'open-iconic/font/css/open-iconic-bootstrap.css'
 
   export default {
     name: 'app',
