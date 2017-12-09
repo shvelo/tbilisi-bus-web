@@ -1,6 +1,6 @@
-# leaflet-app
+# Tbilsi Bus - Web
 
-> A Vue.js project
+Tbilisi bus arrival times
 
 ## Build Setup
 
